@@ -4,6 +4,7 @@ import Recommend from '../views/recommend'
 import Rank from '../views/rank'
 import Singer from '../views/singer'
 import Search from '../views/search'
+import SingerDetail from '../views/singerDetail'
 
 Vue.use(VueRouter)
 
@@ -20,7 +21,14 @@ const routes = [
   {
     path: '/singer',
     name: 'singer',
-    component: Singer
+    component: Singer,
+    children:[
+      {
+        path: '/singer/singerDetail',
+        name: 'singerDetail',
+        component: SingerDetail
+      }
+    ]
   },
   {
     path: '/rank',
@@ -35,6 +43,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
+  mode:'history',
   linkActiveClass:'active',
   routes
 })
