@@ -38,7 +38,7 @@ export default {
   height: 44px;
   line-height: 44px;
   font-size: 14px;
-  background: rgba(102,153,204,0.7);
+  background: rgba(0, 184, 148,0.7);
 }
 
 .tab-item {

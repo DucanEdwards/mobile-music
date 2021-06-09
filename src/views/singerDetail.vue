@@ -1,19 +1,23 @@
 <template>
   <transition name="slide">
     <div class="singerDetail">
-      歌手详情页面
+      <MusciList :id="this.id"></MusciList>
     </div>
   </transition>
 </template>
 
 <script>
 import {mapGetters} from 'vuex'
+import MusciList from '../components/musicList'
 export default {
   name: "singerDetail",
   data() {
     return {
       id:''
     }
+  },
+  components:{
+    MusciList
   },
   computed:{
     ...mapGetters([
@@ -22,7 +26,8 @@ export default {
   },
   created(){
     this.id = this.$route.query.id;
-    console.log(this.singer);
+    // console.log(this.id)
+    // console.log(this.singer);
   }
 }
 </script>
@@ -37,9 +42,11 @@ export default {
   bottom: 0px;
   background: gray;
 }
+
 .slide-enter-active, .slide-leave-active{
   transition: all 0.3s;
 }
+
 .slide-enter, .slide-leave-to{
   transform: translate3d(100%, 0, 0);
 }

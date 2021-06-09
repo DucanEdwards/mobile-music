@@ -1,7 +1,9 @@
 <template>
   <div id="app">
-    <MHead></MHead>
-    <Tab></Tab>
+    <div class="tophead">
+      <MHead></MHead>
+      <Tab></Tab>
+    </div>
     <keep-alive>
       <router-view></router-view>
     </keep-alive>
@@ -26,5 +28,9 @@
 <style>
 *{
   margin: 0px;
+}
+.tophead{
+  position: fixed;
+  width: 100%;
 }
 </style>

@@ -18,7 +18,7 @@ export default {
   height: 44px;
   text-align: center;
   color: rgba(255,255,255,0.8);
-  background: rgba(102,153,204,0.7);
+  background: #00b894;
 }
 .mhead .icon{
   display: inline-block;
