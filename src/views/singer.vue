@@ -16,6 +16,9 @@
           </li>
         </ul>
       </div>
+      <div class="loading-container" v-show="!singerList.length">
+        <loading></loading>
+      </div>
     </div>
     <router-view></router-view>
   </div>
@@ -23,6 +26,7 @@
 
 <script>
 import BScroll from 'better-scroll';
+import Loading from 'components/loading'
 import {mapMutations} from 'vuex'
 export default {
   name: "singer",
@@ -31,10 +35,13 @@ export default {
       singerList: []
     }
   },
+  components: {
+    Loading
+  },
   methods: {
     loadSinger() {
       var v = this;
-      v.$axios.get('api/toplist/artist')
+      v.$axios.get('/api/toplist/artist')
           .then(response => {
             //console.log(response.datalist.artists);
             if (response.data.code === 200) {
@@ -69,7 +76,6 @@ export default {
       setSinger: 'SET_SINGER'
     })
   },
-  components: {},
   created() {
     this.loadSinger()
   },

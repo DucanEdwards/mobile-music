@@ -48,6 +48,9 @@
           </ul>
         </div>
 
+      </div>>
+      <div class="loading-container" v-show="!recommendList.length&&!newSongList.length">
+        <loading></loading>
       </div>
     </scroll>
   </div>
@@ -56,6 +59,7 @@
 <script>
 import Slider from '../components/slider'
 import Scroll from '../components/scroll'
+import Loading from  'components/loading'
 export default {
   name: "recommend",
   data() {
@@ -124,7 +128,8 @@ export default {
   },
   components: {
     Slider,
-    Scroll
+    Scroll,
+    Loading
   },
   created() {
     this.loadBanner();
