@@ -1,10 +1,13 @@
 <template>
   <div class="song-list">
     <ul>
-      <li v-for="song in songs" class="item">
+      <li @click="selectItem(song,index)"  v-for="(song,index) in songs" class="item">
         <div class="content">
-          <h2 class="name">{{song.name}}</h2>
-          <p class="desc">{{song.ar}} - {{song.al.name}}</p>
+          <div class="count">{{pad(index+1)}}</div>
+          <div class="info">
+            <h2 class="name">{{song.name}}</h2>
+            <p class="desc">{{song.ar}} - {{song.al}}</p>
+          </div>
         </div>
       </li>
     </ul>
@@ -19,6 +22,19 @@ export default {
       type:Array,
       default:[]
     }
+  },
+  methods:{
+    pad(num, n = 2) {
+      let len = num.toString().length;
+      while (len < n) {
+        num = '0' + num;
+        len++;
+      }
+      return num;
+    },
+    selectItem(item,index){
+      this.$emit('select',item,index);
+    }
   }
 }
 </script>
@@ -31,23 +47,29 @@ export default {
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  height: 64px;
+  height: 60px;
+  list-style: none;
   font-size: 13px;
   border-bottom: solid #e6e6e6 1px;
 }
 .song-list .content{
-  flex: 1;
+  display: flex;
   line-height: 20px;
   overflow: hidden;
+  padding: 5px 0px 5px 0px;
 }
-.content .name{
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  color: rgba(0,0,0,1);
+.content .count{
+  margin-top: 10px;
+  margin-right: 8px;
+  font-size: 15px;
+}
+
+.content .info .name{
+  color: rgba(0,0,0,0.7);
   font-size: 14px;
 }
-.content .desc{
+
+.content .info .desc{
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;

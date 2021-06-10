@@ -1,0 +1,90 @@
+@font-face {
+    font-family: 'icon';
+    src:  url('../fonts/icon.eot?fypqvi');
+    src:  url('../fonts/icon.eot?fypqvi#iefix') format('embedded-opentype'),
+    url('../fonts/icon.ttf?fypqvi') format('truetype'),
+    url('../fonts/icon.woff?fypqvi') format('woff'),
+    url('../fonts/icon.svg?fypqvi#icon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'icon' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-back:before {
+    content: "\e900";
+    color: rgba(0, 184, 148,1.0);
+}
+.icon-playlist:before {
+    content: "\e901";
+    color: rgba(0, 184, 148,1.0);
+}
+.icon-close:before {
+    content: "\e901";
+    color: rgba(0, 184, 148,1.0);
+}
+.icon-delete:before {
+    content: "\e902";
+    color: rgba(0, 184, 148,1.0);
+}
+.icon-favorite:before {
+    content: "\e903";
+    color: rgba(0, 184, 148,1.0);
+}
+.icon-loop:before {
+    content: "\e904";
+    color: rgba(0, 184, 148,1.0);
+}
+.icon-next:before {
+    content: "\e905";
+    color: rgba(0, 184, 148,1.0);
+}
+.icon-not-favorite:before {
+    content: "\e906";
+    color: rgba(0, 184, 148,1.0);
+}
+.icon-pause-mini:before {
+    content: "\e907";
+    color: rgba(0, 184, 148,1.0);
+}
+.icon-pause:before {
+    content: "\e908";
+    color: rgba(0, 184, 148,1.0);
+}
+.icon-play-mini:before {
+    content: "\e909";
+    color: rgba(0, 184, 148,1.0);
+}
+.icon-play:before {
+    content: "\e90a";
+    color: rgba(0, 184, 148,1.0);
+}
+.icon-playlist:before {
+    content: "\e90b";
+    color: rgba(0, 184, 148,1.0);
+}
+.icon-prev:before {
+    content: "\e90c";
+    color: rgba(0, 184, 148,1.0);
+}
+.icon-random:before {
+    content: "\e90d";
+    color: rgba(0, 184, 148,1.0);
+}
+.icon-sequence:before {
+    content: "\e90e";
+    color: rgba(0, 184, 148,1.0);
+}
