@@ -49,7 +49,10 @@
 <script>
 import Scroll from 'components/scroll'
 import Loading from 'components/loading'
+import {playlistMixin} from '../common/js/mixin'
+
 export default {
+  mixins: [playlistMixin],
   name: "rank",
   data() {
     return {
@@ -61,6 +64,11 @@ export default {
     Loading
   },
   methods: {
+    handlePlayList(playList) {
+      const bottom = playList.length > 0 ? '60px' : '';
+      this.$refs.rank.style.bottom = bottom;
+      this.$refs.toplist.refresh();
+    },
     loadRank() {
       var v = this;
       v.$axios.get('api/toplist/detail')

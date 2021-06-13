@@ -5,7 +5,7 @@
 <!--        <Icon type="md-arrow-back"/>-->
       </i>
     </div>
-    <h1 class="title">{{singerInfo.name}}</h1>
+    <h1 class="title" v-html="title"></h1>
 
     <div class="bg-image" :style="bgStyle" ref="bgImage">
       <div class="filter" ref="filter"></div>
@@ -21,7 +21,6 @@
         <loading></loading>
       </div>
     </scroll>
-
   </div>
 </template>
 
@@ -30,9 +29,11 @@ import Scroll from "./scroll";
 import SongList from "./songList";
 import Loading from "./loading";
 import {mapActions} from 'vuex'
+import {playlistMixin} from '../common/js/mixin'
 
 const RESERVED_HEIGHT = 120;
 export default {
+  mixins: [playlistMixin],
   name: "musicList",
   components: {
     SongList,
@@ -40,117 +41,38 @@ export default {
     Loading
   },
   props: {
-    id: {
+    title: {
       type: String,
       default: '',
+    },
+    bgImage: {
+      type: String,
+      default: ''
+    },
+    songList: {
+      type: Array,
+      default: [],
       required: true
     }
   },
   data() {
     return {
-      singerInfo: {},
-      songList: [],
+      // singerInfo: {},
+      // songList: [],
       scrollY: 0,
       probeType: 1
     }
   },
   computed: {
     bgStyle() {
-      return `background-image:url(${this.singerInfo.img1v1Url})`;
+      return `background-image:url(${this.bgImage})`;
     }
   },
   methods: {
-    loadSingerSong() {
-      var v = this;
-      let list=[];
-      if (!v.id) {
-        this.$router.push("/singer");
-        return;
-      }
-      v.$axios.get('/api/artists', {
-        params: {
-          id: v.id
-        }
-      }).then(response => {
-        console.log(response.data);
-        if (response.data.code === 200) {
-          v.singerInfo = response.data.artist;
-          list = response.data.hotSongs;
-          v.filterSinger(list);
-          v.formatSongs(list);
-          console.log(v.songList);
-        }
-      }).catch(error => {
-        console.log(error);
-      });
-    },
-    filterSinger(songList) {
-      songList.forEach((s) => {
-        let ret = [];
-        let ar = '';
-        s.ar.forEach((item) => {
-          ret.push(item.name);
-        });
-        ar = ret.join('/');
-        // console.log(ar);
-        s.ar = ar;
-      });
-    },
-    formatSongs(list){
-      var  v = this;
-      v.loadSongUrl(list);
-    },
-    loadSongUrl(list) {
-      var v = this;
-      var songsIds = '';
-      var songUrlList = [];
-      for (let i = 0; i < list.length; i++) {
-        songsIds += list[i].id +',';
-      }
-      songsIds = songsIds.substring(0,songsIds.length-1);
-      // console.log(songsIds);
-      v.$axios.get('/api/song/url', {
-        params: {
-          id: songsIds
-        }
-      }).then(response => {
-        // console.log(response.data.data);
-        if (response.data.code === 200) {
-          songUrlList = response.data.data;
-          //console.log(songUrlList);
-          v.manageSongList(list,songUrlList);
-        }
-      }).catch(error => {
-        console.log(error);
-      });
-    },
-    manageSongList(list1,list2){
-      var v = this;
-      for (let i = 0;i<list1.length;i++){
-        let song = {
-          id:'',
-          name:'',
-          ar:'',
-          al:'',
-          imgURL:'',
-          songURL:'',
-          time:0
-        };
-        song.id = list1[i].id;
-        song.name = list1[i].name;
-        song.ar = list1[i].ar;
-        song.al = list1[i].al.name;
-        song.imgURL = list1[i].al.picUrl;
-        song.time = list1[i].dt;
-        for (let m = 0;m<list2.length;m++){
-          if (list1[i].id === list2[m].id) {
-            song.songURL = list2[m].url;
-          }
-        }
-        v.songList.push(song);
-      }
-      // console.log("songList：");
-      // console.log(v.songList);
+    handlePlayList(playList){
+      const bottom = playList.length > 0? '60px' :'';
+      this.$refs.list.$el.style.bottom = bottom;
+      this.$refs.list.refresh();
     },
     back(){
       this.$router.back();
@@ -171,7 +93,7 @@ export default {
     ])
   },
   created() {
-    this.loadSingerSong();
+    // this.loadSingerSong();
     this.probeType = 3;
     this.listenScroll = true;
   },

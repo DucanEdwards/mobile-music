@@ -5,6 +5,7 @@ import Rank from '../views/rank'
 import Singer from '../views/singer'
 import Search from '../views/search'
 import SingerDetail from '../views/singerDetail'
+import Disc from '../views/disc'
 
 Vue.use(VueRouter)
 
@@ -16,7 +17,14 @@ const routes = [
   {
     path: '/recommend',
     name: 'recommend',
-    component: Recommend
+    component: Recommend,
+    children: [
+      {
+        path:':id',
+        name:'disc',
+        component:Disc,
+      }
+    ]
   },
   {
     path: '/singer',
@@ -43,7 +51,6 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  mode:'history',
   linkActiveClass:'active',
   routes
 })

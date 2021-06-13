@@ -1,6 +1,6 @@
 <template>
-  <div class="singer">
-    <div class="singer-Warpper" ref="singerWarpper">
+  <div class="singer" ref="singer">
+    <scroll ref="scroll" class="singer-content" :data="singerList">
       <div>
         <p class="title">热门</p>
         <ul>
@@ -19,16 +19,20 @@
       <div class="loading-container" v-show="!singerList.length">
         <loading></loading>
       </div>
-    </div>
+    </scroll>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-import BScroll from 'better-scroll';
+// import BScroll from 'better-scroll';
+import Scroll from 'components/scroll';
 import Loading from 'components/loading'
 import {mapMutations} from 'vuex'
+import {playlistMixin} from '../common/js/mixin'
+
 export default {
+  mixins: [playlistMixin],
   name: "singer",
   data() {
     return {
@@ -36,9 +40,15 @@ export default {
     }
   },
   components: {
-    Loading
+    Loading,
+    Scroll
   },
   methods: {
+    handlePlayList(playList) {
+      const bottom = playList.length > 0 ? '60px' : '';
+      this.$refs.singer.style.bottom = bottom;
+      this.$refs.scroll.refresh();
+    },
     loadSinger() {
       var v = this;
       v.$axios.get('/api/toplist/artist')
@@ -46,17 +56,17 @@ export default {
             //console.log(response.datalist.artists);
             if (response.data.code === 200) {
               v.singerList = response.data.list.artists;
-              v.$nextTick(() =>{
-                if (!this.scroll) {
-                  this.scroll = new BScroll(this.$refs.singerWarpper, {
-                    click: true,
-                    probeType: 3
-                  });
-                  // console.log(this.scroll);
-                } else {
-                  this.scroll.refresh();
-                };
-              });
+              // v.$nextTick(() =>{
+              //   if (!this.scroll) {
+              //     this.scroll = new BScroll(this.$refs.singerWarpper, {
+              //       click: true,
+              //       probeType: 3
+              //     });
+              //     // console.log(this.scroll);
+              //   } else {
+              //     this.scroll.refresh();
+              //   };
+              // });
             }
           })
           .catch(error => {
@@ -94,7 +104,7 @@ export default {
   color:rgb(139,139,139);
   padding-left: 5px;
 }
-.singer-Warpper{
+.singer-content{
   height: 100%;
   overflow: hidden;
 }
