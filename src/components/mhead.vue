@@ -20,16 +20,16 @@ export default {
   color: rgba(255,255,255,0.8);
   background: #00b894;
 }
-.mhead .icon{
+.mhead .icon {
+  position: absolute;
   display: inline-block;
-  vertical-align: top;
-  margin-top: 6px;
+  margin-top: 8px;
+  right: 15px;
   width: 30px;
   height: 32px;
-  margin-right: 5px;
   border-radius: 50%;
-  background-image: url("../common/images/logo.png");
-  background-size: 30px 32px;
+  background-image: url("../common/images/user.png");
+  background-size: 28px 28px;
 
 }
 .mhead .text{

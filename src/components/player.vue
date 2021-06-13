@@ -12,7 +12,7 @@
         </div>
         <div class="top">
           <div class="back" @click="back">
-            <i class="icon-back"></i>
+            <i class="icon-close"></i>
           </div>
           <h1 class="title" v-html="currentSong.name"></h1>
           <h2 class="subtitle" v-html="currentSong.ar"></h2>
@@ -36,8 +36,8 @@
           </div>
 
           <div class="operators">
-            <div class="icon i-left">
-              <i class="icon-sequence" ></i>
+            <div class="icon i-left" @click="changeMode">
+              <i :class="iconMode" ></i>
             </div>
             <div class="icon i-left" :class="disableCls">
               <i class="icon-prev" @click="prev"></i>
@@ -74,7 +74,7 @@
         </div>
       </div>
     </transition>
-    <audio :src="songurl" ref="audio" @canplay="ready" @error="error" @timeupdate="updateTime"></audio>
+    <audio :src="currentSong.songURL" ref="audio" @canplay="ready"  @ended="end" @error="error" @timeupdate="updateTime"></audio>
   </div>
 </template>
 
@@ -82,6 +82,8 @@
 import {mapGetters, mapMutations} from 'vuex'
 import animations from 'create-keyframe-animation'
 import ProgressBar from './progress-bar'
+import {playMode} from '../common/js/config'
+import {shuffle} from '../common/js/util'
 
 export default {
   name: "player",
@@ -90,7 +92,6 @@ export default {
   },
   data() {
     return {
-      songurl: '',
       songReady: false,
       currentTime: 0
     }
@@ -105,6 +106,9 @@ export default {
     cdCls() {
       return this.playing ? 'play' : ' play pause'
     },
+    iconMode() {
+      return this.mode === playMode.sequence ? 'icon-sequence' : this.mode === playMode.loop ? 'icon-loop' : 'icon-random'
+    },
     disableCls() {
       return this.songReady ? '' : 'disable'
     },
@@ -117,7 +121,9 @@ export default {
       'playList',
       'currentSong',
       'playing',
-      'currentIndex'
+      'currentIndex',
+      'mode',
+      'sequenceList'
     ])
   },
   methods: {
@@ -185,21 +191,6 @@ export default {
         scale
       }
     },
-    getSongUrl(id) {
-      var v = this;
-      return v.$axios.get('/api/song/url', {
-        params: {
-          id: id
-        }
-      }).then(response => {
-        // console.log(response.data.data[0].url);
-        if (response.data.code === 200) {
-          v.songurl = response.data.data[0].url;
-        }
-      }).catch(error => {
-        console.log(error);
-      });
-    },
     togglePlaying() {
       if (!this.songReady) {
         return;
@@ -258,6 +249,48 @@ export default {
       }
       this.songReady = false;
     },
+    //歌曲播放完成自动播放下一曲
+    end(){
+      //如果播放模式为单曲循环，则不切换歌曲
+      if (this.mode ===playMode.loop) {
+        this.loop();
+      }else {
+        this.next();
+      }
+    },
+    //单曲循环
+    loop(){
+      //将当前时间重置为0，然后再调用播放函数
+      this.$refs.audio.currentTime = 0;
+      this.$refs.audio.play();
+    },
+    //更改歌曲播放模式
+    changeMode() {
+      const mode = (this.mode + 1) % 3;
+      this.setPlayMode(mode);
+      //重置歌曲播放列表
+      let list = null;
+      // console.log(this.sequenceList);
+      if (mode === playMode.random) {
+        list = shuffle(this.sequenceList);
+      } else {
+        list = this.sequenceList;
+      }
+      this.resetCurrentIndex(list);
+      this.setPlayList(list);
+
+    },
+    /**
+     * @list
+     * 重置CurrentIndex,模式切换的时候，从新的播放列表里面找出当前播放歌曲的index
+     * 保证模式切换时，当前歌曲不发生变化
+     */
+    resetCurrentIndex(list) {
+      let index = list.findIndex((item) => {
+        return item.id === this.currentSong.id;
+      });
+      this.setCurrentIndex(index);
+    },
     ready() {
       this.songReady = true;
     },
@@ -276,26 +309,27 @@ export default {
     ...mapMutations({
       setFullScreen: 'SET_FULL_SCREEN',
       setPlayingState: 'SET_PLAYING_STATE',
-      setCurrentIndex: 'SET_CURRENT_INDEX'
+      setCurrentIndex: 'SET_CURRENT_INDEX',
+      setPlayMode: 'SET_PLAY_MODE',
+      setPlayList: 'SET_PLAYLIST'
     })
   },
   watch: {
-    currentSong() {
+    currentSong(newSong, oldSong) {
       var v = this;
-      v.getSongUrl(v.currentSong.id).then(() => {
-        this.$nextTick(() => {
-          v.$refs.audio.play();
-        });
-      })
+      if (newSong.id === oldSong.id) {
+        return;
+      }
+      v.$nextTick(() => {
+        v.$refs.audio.play();
+      });
     },
     playing(newPlaying) {
       var v = this;
       const audio = this.$refs.audio;
-      this.getSongUrl(v.currentSong.id).then(() => {
-        this.$nextTick(() => {
-          newPlaying ? audio.play() : audio.pause();
-        });
-      })
+      this.$nextTick(() => {
+        newPlaying ? audio.play() : audio.pause();
+      });
     }
   },
 }
@@ -341,12 +375,10 @@ export default {
   z-index: 50;
 }
 
-.normal-player .top .back .icon-back {
+.normal-player .top .back .icon-close {
   display: block;
   padding: 9px;
-  font-size: 22px;
-  /*color: $color-theme*/
-  transform: rotate(-90deg);
+  font-size: 24px;
 }
 
 .normal-player .top .title {
