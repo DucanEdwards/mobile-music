@@ -13,20 +13,37 @@
             </li>
           </ul>
         </div>
+
+        <div class="search-history" v-show="searchHistory.length">
+          <h1 class="title">
+            <span class="text">搜索历史</span>
+            <span class="clear" @click="showConfirm">
+                <Icon size="18" type="ios-trash-outline"/>
+            </span>
+          </h1>
+          <search-list @select="addQuery" @delete="deleteSearchHistory" :searches="searchHistory"></search-list>
+        </div>
+
       </div>
     </div>
-    <div class="search-result" v-show=" query">
-      <suggest :query="query"></suggest>
+    <div class="search-result" v-show="query" ref="searchResult">
+      <suggest @select="saveSearch" @listScroll="blurInput" :query="query" ref="suggest"></suggest>
     </div>
+    <confirm ref="confirm" @confirm="clearSearchHistory" text="是否清空所有历史记录?" confirmBtnText="清空"></confirm>
   </div>
 </template>
 
 <script>
 import SearchBox from '../components/search-box'
 import Suggest from './suggest'
+import {playlistMixin} from '../common/js/mixin'
+import Confirm from '../components/confirm'
+import SearchList from '../components/search-list'
+import {mapActions, mapGetters} from 'vuex'
 
 export default {
   name: "search",
+  mixins: [playlistMixin],
   data() {
     return {
       hotKey: [],
@@ -35,9 +52,24 @@ export default {
   },
   components: {
     SearchBox,
-    Suggest
+    Suggest,
+    Confirm,
+    SearchList
+  },
+  computed: {
+    ...mapGetters([
+      'searchHistory'
+    ])
   },
   methods: {
+    handlePlayList(playlist) {
+      const bottom = playlist.length > 0 ? '60px' : '';
+      this.$refs.searchResult.style.bottom = bottom;
+      this.$refs.suggest.refresh();
+    },
+    blurInput(){
+      this.$refs.searchBox.blur();
+    },
     loadHotSearch() {
       var v = this;
       v.$axios.get('api/search/hot')
@@ -57,7 +89,20 @@ export default {
     },
     onQueryChange(query){
       this.query = query;
-    }
+    },
+    //将搜索关键词保存至缓存和vuex
+    saveSearch() {
+      // 传入的是查询字符串
+      this.saveSearchHistory(this.query);
+    },
+    showConfirm(){
+      this.$refs.confirm.show();
+    },
+    ...mapActions([
+      'saveSearchHistory',
+      'deleteSearchHistory',
+      'clearSearchHistory'
+    ])
   },
   created() {
     this.loadHotSearch();

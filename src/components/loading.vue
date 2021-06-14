@@ -1,6 +1,6 @@
 <template>
   <div class="loading">
-    <img width="40" height="30" src="../common/images/loading.gif">
+    <img width="50" height="50" src="../common/images/loading.gif">
     <p class="desc">{{title}}</p>
   </div>
 </template>
@@ -23,7 +23,7 @@ export default {
 }
 .desc{
   line-height: 20px;
-  font-size: 12px;
+  font-size: 18px;
   color:rgba(102, 153, 204, 0.8);
 }
 </style>

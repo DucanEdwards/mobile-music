@@ -2,7 +2,7 @@
   <div class="searchBox">
     <div class="search-box">
       <i class="icon-search"></i>
-      <input :placeholder="placeholder" v-model="query" class="box"/>
+      <input ref="query" :placeholder="placeholder" v-model="query" class="box"/>
       <i v-show="query" @click="clear" class="icon-delete"></i>
     </div>
     <div class="searchInfo">
@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import {debounce} from "../common/js/util";
+
 export default {
   name: "search",
   props: {
@@ -32,12 +34,16 @@ export default {
     // 在父组件中调用
     setQuery(query) {
       this.query = query;
-    }
+    },
+    blur() {
+      this.$refs.query.blur();
+    },
   },
   created() {
-    this.$watch('query', (newQuery) => {
+    // 使父组件的query改变进而让suggest组件搜索
+    this.$watch('query', debounce((newQuery) => {
       this.$emit('query', newQuery);
-    })
+    },200));
   }
 }
 </script>
@@ -55,7 +61,7 @@ export default {
   width: 100%;
   padding: 0 6px;
   height: 40px;
-  background: rgba(135, 203, 216, 0.7);
+  background: rgba(29, 209, 161,0.4);
   border-radius: 6px;
 }
 
