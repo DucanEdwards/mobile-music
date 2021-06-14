@@ -20,7 +20,7 @@
         <div class="middle">
           <div class="middle-l">
             <div class="cd-wrapper" ref="cdWrapper">
-              <div class="cd">
+              <div class="cd" :class="cdCls">
                 <img :src="currentSong.imgURL" class="image"/>
               </div>
             </div>
@@ -122,7 +122,7 @@ export default {
       return this.playing ? 'icon-play-mini' : 'icon-pause-mini'
     },
     cdCls() {
-      return this.playing ? 'play' : ' play pause'
+      return this.playing ? 'play' : 'play pause'
     },
     iconMode() {
       return this.mode === playMode.sequence ? 'icon-sequence' : this.mode === playMode.loop ? 'icon-loop' : 'icon-random'
@@ -424,10 +424,6 @@ export default {
 <style scoped>
 @import '../common/css/icon.css';
 
-.player {
-
-}
-
 .normal-player {
   position: fixed;
   left: 0;
@@ -536,10 +532,6 @@ export default {
   box-sizing: border-box;
   border-radius: 50%;
   border: 10px solid rgba(255, 255, 255, 0.1);
-}
-
-.cd-wrapper .play {
-  animation: rotate 20s linear infinite;
 }
 
 .playing-lyric-wrapper {
