@@ -29,7 +29,8 @@
           <Scroll class="middle-r" ref="lyricList" :data ="currentSongLyric && currentSongLyric.lines">
             <div class="lyric-wrapper">
               <div v-if="currentSongLyric">
-                <p ref="lyricLine" :class="{'current':currentLineNum === index}" class="text" :key="index" v-for="(line,index) in currentSongLyric.lines">{{line.lrc}}</p>
+                <p ref="lyricLine" :class="{'current':currentLineNum === index}" class="text"
+                   :key="index" v-for="(line,index) in currentSongLyric.lines">{{line.lrc}}</p>
               </div>
             </div>
           </Scroll>
@@ -78,11 +79,12 @@
         <div class="control">
           <i :class="miniIcon" @click.stop="togglePlaying"></i>
         </div>
-        <div class="control">
+        <div class="control" @click.stop="showPlayList">
           <i class="icon-playlist"></i>
         </div>
       </div>
     </transition>
+    <play-list ref="playlist"></play-list>
     <audio :src="currentSong.songURL" ref="audio" @canplay="ready"  @ended="end" @error="error" @timeupdate="updateTime"></audio>
   </div>
 </template>
@@ -94,12 +96,14 @@ import ProgressBar from './progress-bar'
 import {playMode} from '../common/js/config'
 import {shuffle} from '../common/js/util'
 import Scroll from '../components/scroll'
+import PlayList from '../components/playlist'
 
 export default {
   name: "player",
   components: {
     ProgressBar,
-    Scroll
+    Scroll,
+    PlayList
   },
   data() {
     return {
@@ -210,6 +214,9 @@ export default {
     },
     open() {
       this.setFullScreen(true);
+    },
+    showPlayList() {
+      this.$refs.playlist.show();
     },
     enter(el,done){
       const {x, y, scale} = this._getPosAndScale();
