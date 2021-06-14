@@ -40,6 +40,14 @@
     content: "\e902";
     color: #fff;
 }
+.icon-delete1:before {
+    content: "\e912";
+    color: #bfbfbf;
+}
+.icon-search1:before {
+    content: "\e913";
+    color: #bfbfbf;
+}
 .icon-favorite:before {
     content: "\e90d";
     color: #d81e06;

@@ -1,9 +1,10 @@
 <template>
   <div class="song-list">
     <ul>
-      <li @click="selectItem(song,index)"  v-for="(song,index) in songs" class="item">
+      <li @click="selectItem(song,index)" v-for="(song,index) in songs" class="item">
         <div class="content">
-          <div class="count">{{pad(index+1)}}</div>
+          <div v-show="!rankflag" class="count">{{pad(index+1)}}</div>
+          <div v-show="rankflag" class="count" :class="RankRed(index+1)">{{pad(index+1)}}</div>
           <div class="info">
             <h2 class="name">{{song.name}}</h2>
             <p class="desc">{{song.ar}} - {{song.al}}</p>
@@ -21,6 +22,10 @@ export default {
     songs:{
       type:Array,
       default:[]
+    },
+    rankflag: {
+      type: Boolean,
+      default: false
     }
   },
   methods:{
@@ -34,12 +39,21 @@ export default {
     },
     selectItem(item,index){
       this.$emit('select',item,index);
+    },
+    RankRed(index) {
+      if (index <4){
+        return 'red';
+      }else
+        return '';
     }
   }
 }
 </script>
 
 <style scoped>
+.red{
+  color: #d63031;
+}
 .song-list{
   /*margin-left: 15px;*/
 }

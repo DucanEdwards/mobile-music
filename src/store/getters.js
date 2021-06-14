@@ -16,6 +16,8 @@ export const currentIndex = state => state.currentIndex;
 
 export const disc = state => state.disc;
 
+export const rank = state => state.rank;
+
 //获取当前播放歌曲,如果没有则设置为空
 export const currentSong = (state) =>{
     return state.playList[state.currentIndex] || {} ;
