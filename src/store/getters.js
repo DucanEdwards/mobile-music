@@ -20,6 +20,10 @@ export const rank = state => state.rank;
 
 export const searchHistory = state => state.searchHistory;
 
+export const playHistory = state => state.playHistory;
+
+export const favoriteList = state => state.favoriteList;
+
 //获取当前播放歌曲,如果没有则设置为空
 export const currentSong = (state) =>{
     return state.playList[state.currentIndex] || {} ;

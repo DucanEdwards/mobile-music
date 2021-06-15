@@ -7,6 +7,7 @@ import Search from '../views/search'
 import SingerDetail from '../views/singerDetail'
 import Disc from '../views/disc'
 import RankDetail from '../views/rankDetail'
+const UserCenter = () => import('../components/user-center');
 
 Vue.use(VueRouter)
 
@@ -55,6 +56,11 @@ const routes = [
     path: '/search',
     name: 'search',
     component: Search
+  },
+  {
+    path:'/user-center',
+    name:'user-center',
+    component:UserCenter
   }
 ]
 

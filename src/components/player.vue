@@ -74,7 +74,7 @@
               <i class="icon-next" @click="next"></i>
             </div>
             <div class="icon i-right">
-              <i class="icon icon-not-favorite"></i>
+              <i class="icon" @click="toggleFavorite(currentSong)" :class="getFavoriteIcon(currentSong)"></i>
             </div>
           </div>
         </div>
@@ -105,7 +105,7 @@
 </template>
 
 <script>
-import {mapGetters, mapMutations} from 'vuex'
+import {mapGetters, mapMutations,mapActions} from 'vuex'
 import animations from 'create-keyframe-animation'
 import ProgressBar from './progress-bar'
 import {playMode} from '../common/js/config'
@@ -114,12 +114,14 @@ import Scroll from '../components/scroll'
 import PlayList from '../components/playlist'
 import Lyric from 'xieyezi-lyric'
 import {prefixStyle} from "../common/js/dom";
+import {playerMixin} from '../common/js/mixin'
 
 const transitionDuration = prefixStyle('transitionDuration')
 const transform = prefixStyle('transform');
 
 export default {
   name: "player",
+  mixins: [playerMixin],
   components: {
     ProgressBar,
     Scroll,
@@ -351,6 +353,8 @@ export default {
     },
     ready() {
       this.songReady = true;
+      //将该首歌曲存放至vuex里面的playHistory中
+      this.savePlayHistory(this.currentSong);
     },
     error() {
       this.songReady = true;
@@ -471,7 +475,10 @@ export default {
       setCurrentIndex: 'SET_CURRENT_INDEX',
       setPlayMode: 'SET_PLAY_MODE',
       setPlayList: 'SET_PLAYLIST'
-    })
+    }),
+    ...mapActions([
+      'savePlayHistory'
+    ])
   },
   watch: {
     currentSong(newSong, oldSong) {

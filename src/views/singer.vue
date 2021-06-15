@@ -2,7 +2,6 @@
   <div class="singer" ref="singer">
     <scroll ref="scroll" class="singer-content" :data="singerList">
       <div>
-        <p class="title">热门</p>
         <ul>
           <li v-for=" item in singerList" class="Singerlist" @click="selectSinger(item)">
             <div class="infoImg">
