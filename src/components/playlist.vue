@@ -27,12 +27,12 @@
             </li>
           </transition-group>
         </scroll>
-        <div class="list-operate">
-          <div class="add">
-            <i class="icon-add"></i>
-            <span class="text">添加歌曲到队列</span>
-          </div>
-        </div>
+<!--        <div class="list-operate">-->
+<!--          <div class="add">-->
+<!--            <i class="icon-add"></i>-->
+<!--            <span class="text">添加歌曲到队列</span>-->
+<!--          </div>-->
+<!--        </div>-->
         <div class="list-close" @click="hide">
           <span>关闭</span>
         </div>
@@ -322,7 +322,7 @@ export default {
 .list-close {
   text-align: center;
   line-height: 50px;
-  background: #1dd1a1;
+  background: rgba(204, 174, 98,1.0);
   font-size: 14px;
   color: white;
 }

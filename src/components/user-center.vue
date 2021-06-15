@@ -1,19 +1,15 @@
 <template>
   <transition name="slide">
     <div class="user-center">
-      <div :class="themeBackgroud">
+      <div class="themebackgroud">
         <div class="back" @click="back">
           <i class="icon-back"></i>
         </div>
+        <!--切换组件-->
         <div class="switches-wrapper">
           <switches @switch="switchItem" :switches="switches" :currentIndex="currentIndex"></switches>
         </div>
-        <div ref="playBtn" class="play-btn" :class="themeNumber" @click="random">
-                  <span class="themeplay">
-                       <Icon type="ios-play-outline"/>
-                    </span>
-          <span class="text">随机播放全部</span>
-        </div>
+        <!-- 歌曲列表 -->
         <div class="list-wrapper" ref="listWrapper">
           <scroll ref="favoriteList" class="list-scroll" v-if="currentIndex===0" :data="favoriteList">
             <div class="list-inner">
@@ -26,11 +22,7 @@
             </div>
           </scroll>
         </div>
-        <!--<div class="no-result-wrapper" v-show="noResult">-->
-        <!--<no-result :title="noResultDesc"></no-result>-->
-        <!--</div>-->
       </div>
-
     </div>
   </transition>
 </template>
@@ -58,30 +50,9 @@ export default {
     }
   },
   computed: {
-    // noResult() {
-    //     if (this.currentIndex === 0) {
-    //         return !this.favoriteList.length
-    //     } else {
-    //         return !this.playHistory.length
-    //     }
-    // },
-    // noResultDesc() {
-    //     if (this.currentIndex === 0) {
-    //         return '暂无收藏歌曲'
-    //     } else {
-    //         return '你还没有听过歌曲'
-    //     }
-    // },
-    themeNumber() {
-      return this.theme === 0 ? 'theme1' : this.theme === 1 ? 'theme2' : 'theme3'
-    },
-    themeBackgroud(){
-      return this.theme === 0 ? 'theme1backgroud' : this.theme === 1 ? 'theme2backgroud' : 'theme3backgroud'
-    },
     ...mapGetters([
       'favoriteList',
       'playHistory',
-      'theme'
     ])
   },
   methods: {
@@ -132,24 +103,8 @@ export default {
     back() {
       this.$router.back();
     },
-    random() {
-      // let list = this.currentIndex === 0 ? this.favoriteList : this.playHistory;
-      // if (list.length === 0) {
-      //     return
-      // }
-      // list = list.map((song) => {
-      //     return new Song(song);
-      // });
-      // if (this.playHistory.length === 0 ) {
-      //     return;
-      // }
-      // this.randomPlay({
-      //     list:this.playHistory
-      // });
-    },
     ...mapActions([
       'insertSong',
-      'randomPlay'
     ])
   },
   components: {
@@ -171,37 +126,10 @@ export default {
   background: #fff;
 }
 
-.theme1 {
-  color: #ff7675;
-  border: 1px solid #ff7675;
-}
-
-.theme2 {
-  color: #87cbd8;
-  border: 1px solid #87cbd8;
-}
-
-.theme3 {
-  color: #D6A2E8;
-  border: 1px solid #D6A2E8;
-}
-
-.theme1backgroud {
+.themebackgroud {
   width: 100%;
   height: 100%;
-  background: rgba(255,118,117,0.1);
-}
-
-.theme2backgroud {
-  width: 100%;
-  height: 100%;
-  background: rgba(135,203,216,0.1);
-}
-
-.theme3backgroud {
-  width: 100%;
-  height: 100%;
-  background: rgba(214,162,232,0.1);
+  background: rgba(22, 160, 133,0.1);
 }
 
 .back {
@@ -220,30 +148,6 @@ export default {
 .switches-wrapper {
   padding: 10px 0 20px 0;
 }
-
-.play-btn {
-  box-sizing: border-box;
-  width: 135px;
-  padding: 7px 0;
-  margin: 0 auto;
-  text-align: center;
-  border-radius: 100px;
-  font-size: 0;
-}
-
-.themeplay {
-  display: inline-block;
-  vertical-align: middle;
-  margin-right: 6px;
-  font-size: 14px;
-}
-
-/*.icon-play {*/
-/*display: inline-block;*/
-/*vertical-align: middle;*/
-/*margin-right: 6px;*/
-/*font-size: 16px;*/
-/*}*/
 
 .text {
   display: inline-block;

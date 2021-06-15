@@ -102,5 +102,5 @@
 }
 .icon-back:before {
     content: "\e911";
-    color: #fff;
+    color: rgba(46, 204, 113,1.0);
 }

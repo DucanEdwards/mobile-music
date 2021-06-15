@@ -790,12 +790,13 @@ export default {
   display: flex;
   align-items: center;
   position: fixed;
-  left: 0;
+  left: 5px;
   bottom: 0;
   z-index: 180;
-  width: 100%;
+  width: 97%;
   height: 60px;
-  background: #333;
+  background: rgba(204, 174, 98,1.0);
+  border-radius: 0 30px 30px 0;
 }
 
 .mini-enter-active, .mini-leave-active {

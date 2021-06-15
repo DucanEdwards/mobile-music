@@ -12,7 +12,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-import {mapGetters} from 'vuex'
 export default {
   props: {
     switches: {
@@ -28,11 +27,6 @@ export default {
     switchItem(index) {
       this.$emit("switch", index);
     }
-  },
-  computed:{
-    ...mapGetters([
-      'theme',
-    ])
   }
 };
 </script>

@@ -18,6 +18,7 @@ function insertArray(arr, val, compare, maxlen) {
     if (index > 0) {
         arr.splice(index, 1);
     }
+    // 插到最前面
     arr.unshift(val);
     if (maxlen && arr.length > maxlen) {
         arr.pop();
