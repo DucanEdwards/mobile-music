@@ -4,7 +4,7 @@
       <div class="list-wrapper" @click.stop>
         <div class="list-header">
           <h1 class="title">
-            <i class="icon"></i>
+            <span class="text">当前播放列表</span>
             <span class="text"></span>
             <span class="clear" @click="showConfirm">
                 <Icon size="22" color="#666" type="ios-trash-outline"/>
